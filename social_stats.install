@@ -1,0 +1,137 @@
+<?php
+
+/**
+ * Implements hook_schema().
+ */
+function social_stats_schema() {
+  $schema['social_stats_facebook'] = array(
+    'description' => 'Table containing stats from Facebook for Social Stats module.',
+    'fields' => array(
+      'nid' => array(
+        'description' => 'Node id of a node.',
+        'type' => 'int',
+        'not null' => TRUE,
+      ),
+      'node_type' => array(
+        'description' => 'The node type of this node.',
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'fb_likes' => array(
+        'description' => 'Number of facebook likes for this node.',
+        'type' => 'int',
+        'default' => 0,
+      ),
+      'fb_shares' => array(
+        'description' => 'Number of facebook shares for this node.',
+        'type' => 'int',
+        'default' => 0,
+      ),
+      'fb_comments' => array(
+        'description' => 'Number of facebook comments for this node.',
+        'type' => 'int',
+        'default' => 0,
+      ),
+      'fb_total' => array(
+        'description' => 'Facebook likes + shares + comments for this node.',
+        'type' => 'int',
+        'default' => 0,
+      ),
+    ),
+  );
+
+  $schema['social_stats_twitter'] = array(
+    'description' => 'Table containing Twitter data for Social Stats module.',
+    'fields' => array(
+      'nid' => array(
+        'description' => 'Node id of a node.',
+        'type' => 'int',
+        'not null' => TRUE,
+      ),
+      'node_type' => array(
+        'description' => 'The node type of this node.',
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'tweets' => array(
+        'description' => 'Number of times this node has been tweeted.',
+        'type' => 'int',
+        'default' => 0,
+      ),
+    ),
+  );
+
+  $schema['social_stats_gplus'] = array(
+    'description' => 'Table containing stats from Google Plus for Social Stats module.',
+    'fields' => array(
+      'nid' => array(
+        'description' => 'Node id of a node.',
+        'type' => 'int',
+        'not null' => TRUE,
+      ),
+      'node_type' => array(
+        'description' => 'The node type of this node.',
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'plusone' => array(
+        'description' => 'Number of times this node has been plus oned.',
+        'type' => 'int',
+        'default' => 0,
+      ),
+    ),
+  );
+
+  $schema['social_stats_linkedin'] = array(
+    'description' => 'Table containing stats from LinkedIn for Social Stats module.',
+    'fields' => array(
+      'nid' => array(
+        'description' => 'Node id of a node.',
+        'type' => 'int',
+        'not null' => TRUE,
+      ),
+      'node_type' => array(
+        'description' => 'The node type of this node.',
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'linkedin_shares' => array(
+        'description' => 'Number of this node has been shared on LinkedIn.',
+        'type' => 'int',
+        'default' => 0,
+      ),
+    ),
+  );
+
+  $schema['social_stats_total'] = array(
+    'description' => 'Value of (Facebook total + Twitter Shares + LinkedIn Shares + Google plus shares).',
+    'fields' => array(
+      'nid' => array(
+        'description' => 'Node id of a node.',
+        'type' => 'int',
+        'not null' => TRUE,
+      ),
+      'node_type' => array(
+        'description' => 'The node type of this node.',
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'total_virality' => array(
+        'description' => '(Facebook total + Twitter Shares + LinkedIn Shares + Google plus shares)',
+        'type' => 'int',
+        'default' => 0,
+      ),
+    ),
+  );
+  return $schema;
+}

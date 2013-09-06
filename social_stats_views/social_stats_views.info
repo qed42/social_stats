@@ -1,0 +1,6 @@
+name = Social Stats Views
+description = Enables integration of the data fetched by Social Stats module with views
+core = 7.x
+version = 7.x-1.x-dev
+dependencies[] = social_stats
+dependencies[] = views
