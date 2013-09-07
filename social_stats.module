@@ -159,3 +159,10 @@ function social_stats_cron() {
     ->execute();
   }
 }
+
+/**
+ * Implements hook_node_delete().
+ */
+function social_stats_node_delete($node) {
+  
+}
