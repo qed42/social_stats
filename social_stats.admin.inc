@@ -28,7 +28,7 @@ function social_stats_content_types_form() {
         t('Google Plus'),
         t('LinkedIn'),
       )),
-      '#default_value' =>  $variable ? $variable : NULL,
+      '#default_value' => $variable ? $variable : NULL,
     );
     $i++;
   }

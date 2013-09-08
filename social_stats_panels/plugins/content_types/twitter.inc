@@ -23,7 +23,7 @@ function social_stats_twitter_form_render($subtype, $conf, $args, &$context) {
                   ->execute()
                   ->fetchObject();
                   dsm($tweets_count);
-  if($tweets_count->tweets == '1') {
+  if ($tweets_count->tweets == '1') {
     $block->content = $tweets_count->tweets . ' tweet';
   }
   else {
@@ -32,6 +32,9 @@ function social_stats_twitter_form_render($subtype, $conf, $args, &$context) {
   return $block;
 }
 
+/**
+ * Function to render the edit form, if not used doesn't get a form at all.
+ */
 function social_stats_twitter_form_edit($form, &$form_state) {
   return $form;
 }

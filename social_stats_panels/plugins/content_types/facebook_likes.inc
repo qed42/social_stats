@@ -5,6 +5,7 @@
  * Returns a content type with number of facebook likes on the node.
  * Only available on on node view i.e. with required context node being viewed
  */
+
 $plugin = array(
   'title' => t('Facebook Likes'),
   'content_types' => 'facebook_likes',
@@ -15,6 +16,9 @@ $plugin = array(
   'required context' => array(new ctools_context_required(t('Node'), 'node')),
 );
 
+/**
+ * Function to render the like count.
+ */
 function social_stats_facebook_likes_form_render($subtype, $conf, $args, &$context) {
   $block = new stdClass();
   $like_count = db_select('social_stats_facebook', 'fb')
@@ -22,7 +26,7 @@ function social_stats_facebook_likes_form_render($subtype, $conf, $args, &$conte
                   ->condition('fb.nid', $args[0])
                   ->execute()
                   ->fetchObject();
-  if($like_count->fb_likes == '1') {
+  if ($like_count->fb_likes == '1') {
     $block->content = $like_count->fb_likes . ' like';
   }
   else {
@@ -31,6 +35,9 @@ function social_stats_facebook_likes_form_render($subtype, $conf, $args, &$conte
   return $block;
 }
 
+/**
+ * Function to render the edit form, if not used doesn't get a form at all.
+ */
 function social_stats_facebook_likes_form_edit($form, &$form_state) {
   return $form;
 }

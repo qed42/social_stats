@@ -17,6 +17,9 @@ $plugin = array(
   'required context' => array(new ctools_context_required(t('Node'), 'node')),
 );
 
+/**
+ * Function to render the share count.
+ */
 function social_stats_total_form_render($subtype, $conf, $args, &$context) {
   $block = new stdClass();
   $total_count = db_select('social_stats_total', 't')
@@ -24,7 +27,7 @@ function social_stats_total_form_render($subtype, $conf, $args, &$context) {
                   ->condition('t.nid', $args[0])
                   ->execute()
                   ->fetchObject();
-  if($total_count->total_virality == '1') {
+  if ($total_count->total_virality == '1') {
     $block->content = $total_count->total_virality . ' share';
   }
   else {
@@ -33,6 +36,9 @@ function social_stats_total_form_render($subtype, $conf, $args, &$context) {
   return $block;
 }
 
+/**
+ * Function to render the edit form, if not used doesn't get a form at all.
+ */
 function social_stats_total_form_edit($form, &$form_state) {
   return $form;
 }

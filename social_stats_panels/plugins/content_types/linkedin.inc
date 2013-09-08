@@ -15,6 +15,9 @@ $plugin = array(
   'required context' => array(new ctools_context_required(t('Node'), 'node')),
 );
 
+/**
+ * Function to render the share count.
+ */
 function social_stats_linkedin_form_render($subtype, $conf, $args, &$context) {
   $block = new stdClass();
   $shares_count = db_select('social_stats_linkedin', 'l')
@@ -22,7 +25,7 @@ function social_stats_linkedin_form_render($subtype, $conf, $args, &$context) {
                   ->condition('l.nid', $args[0])
                   ->execute()
                   ->fetchObject();
-  if($shares_count->linkedin_shares == '1') {
+  if ($shares_count->linkedin_shares == '1') {
     $block->content = $shares_count->linkedin_shares . ' share';
   }
   else {
@@ -31,6 +34,9 @@ function social_stats_linkedin_form_render($subtype, $conf, $args, &$context) {
   return $block;
 }
 
+/**
+ * Function to render the edit form, if not used doesn't get a form at all.
+ */
 function social_stats_linkedin_form_edit($form, &$form_state) {
   return $form;
 }
