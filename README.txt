@@ -46,7 +46,7 @@ INSTALLATION
 
 5. Run cron. This will fetch the statistics per node and store it in database.
 
-6. Enable the Social Stats Views module and Social Stats Panels
+6. Enable the Social Stats Views module and/or Social Stats Panels
    (can do it at step 2 itself).
 
 ------------------------
