@@ -1,6 +1,11 @@
 <?php
 
 /**
+ * @file
+ * Tell your module about the views API version.
+ */
+
+/**
  * Implements hook_views_api().
  */
 function social_stats_views_views_api() {

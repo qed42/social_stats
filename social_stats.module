@@ -1,7 +1,9 @@
 <?php
 /**
  * @file
+ * File containing the implemented hooks.
  */
+
 /**
  * Implements hook_help().
  */
@@ -66,10 +68,8 @@ function social_stats_cron() {
     }
   }
 
-  /**
-   * Fetch node id and type for the content types,
-   * which has atleast one social media selected.
-   */
+  // Fetch node id and type for the content types,
+  // which has atleast one social media selected.
   $query = db_select('node', 'n')
             ->fields('n', array('nid', 'type'))
             ->condition('n.type', $content_types)
@@ -169,5 +169,5 @@ function social_stats_cron() {
  * Implements hook_node_delete().
  */
 function social_stats_node_delete($node) {
-  
+
 }

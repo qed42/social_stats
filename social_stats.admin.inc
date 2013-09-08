@@ -24,7 +24,7 @@ function social_stats_content_types_form() {
         t('Facebook'),
         t('Twitter'),
         t('Google Plus'),
-        t('LinkedIn')
+        t('LinkedIn'),
       )),
       '#default_value' => variable_get($types->type) ? variable_get($types->type) : NULL,
     );
