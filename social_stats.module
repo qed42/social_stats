@@ -66,7 +66,7 @@ function social_stats_cron() {
   foreach ($node_types as $types) {
     $variable = variable_get($types->type);
     if ($variable['Facebook'] || $variable['Twitter'] || $variable['Google Plus'] || $variable['LinkedIn']) {
-      $content_types[] = $types->type;
+      $content_types[] = $typees->type;
     }
   }
 
@@ -86,7 +86,11 @@ function social_stats_cron() {
 
     // Getting data from Facebook for nodes of the selected node type.
     if ($variable['Facebook']) {
-      $fql_query = 'http://api.facebook.com/method/fql.query?query=select%20share_count,%20like_count,%20total_count,%20comment_count%20from%20link_stat%20where%20url=%22' . $node_path . '%22&format=json';
+      // Write a query to fetch the data from Facebook.
+      $fql_query = 'http://api.facebook.com/method/fql.query?query=select';
+      $fql_query .= '%20share_count,%20like_count,%20total_count,%20';
+      $fql_query .= 'comment_count%20from%20link_stat%20where%20url=%22';
+      $fql_query .= $node_path . '%22&format=json';
       $fql_response = drupal_http_request($fql_query);
       $facebook_data = json_decode($fql_response->data);
       dsm($facebook_data);
@@ -105,8 +109,10 @@ function social_stats_cron() {
 
     // Getting data from Twitter for nodes of selected node type.
     if ($variable['Twitter']) {
-      $tweets_url = 'http://urls.api.twitter.com/1/urls/count.json?url=' . $node_path;
-      $tweets_response = drupal_http_request($tweets_url);
+      // Write a query to fetch the data from Twitter.
+      $tweets_query = 'http://urls.api.twitter.com/1/urls/count.json?url=';
+      $tweets_query .= $node_path;
+      $tweets_response = drupal_http_request($tweets_query);
       $tweets_data = json_decode($tweets_response->data);
       db_merge('social_stats_twitter')
       ->key(array('nid' => $result->nid))
@@ -120,10 +126,11 @@ function social_stats_cron() {
 
     // Getting data from LinkedIn for nodes of selected node type.
     if ($variable['LinkedIn']) {
-      $linkedin_url = 'http://www.linkedin.com/countserv/count/share?format=json&url=' . $node_path;
-      $linkedin_response = drupal_http_request($linkedin_url);
+      // Write a query to fetch the data from LinkedIn
+      $linkedin_query = 'http://www.linkedin.com/countserv/count/share?';
+      $linkedin_query .='format=json&url=' . $node_path;
+      $linkedin_response = drupal_http_request($linkedin_query);
       $linkedin_data = json_decode($linkedin_response->data);
-      dsm($linkedin_data);
       db_merge('social_stats_linkedin')
       ->key(array('nid' => $result->nid))
       ->fields(array(
@@ -136,16 +143,23 @@ function social_stats_cron() {
 
     // Getting data from Google Plus for nodes of selected node type.
     if ($variable['Google Plus']) {
+      $google_query = '[{"method":"pos.plusones.get","id":"p"';
+      $google_query .= ',"params":{"nolog":true,"id":"' . $node_path;
+      $google_query .= '","source":"widget","userId":"@viewer"';
+      $google_query .= ',"groupId":"@self"},"jsonrpc":"2.0",';
+      $google_query .= '"key":"p","apiVersion":"v1"}]';
       $curl = curl_init();
       curl_setopt($curl, CURLOPT_URL, "https://clients6.google.com/rpc");
       curl_setopt($curl, CURLOPT_POST, 1);
-      curl_setopt($curl, CURLOPT_POSTFIELDS, '[{"method":"pos.plusones.get","id":"p","params":{"nolog":true,"id":"' . $node_path . '","source":"widget","userId":"@viewer","groupId":"@self"},"jsonrpc":"2.0","key":"p","apiVersion":"v1"}]');
+      curl_setopt($curl, CURLOPT_POSTFIELDS, $google_query);
       curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
-      curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-type: application/json'));
+      curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+        'Content-type: application/json'
+      ));
       $curl_results = curl_exec($curl);
       curl_close($curl);
       $json = json_decode($curl_results, TRUE);
-      $gplus_data = intval($json[0]['result']['metadata']['globalCounts']['count']);
+      $gplus_data = $json[0]['result']['metadata']['globalCounts']['count'];
       db_merge('social_stats_gplus')
       ->key(array('nid' => $result->nid))
       ->fields(array(
@@ -156,12 +170,14 @@ function social_stats_cron() {
       $google_plusone = $gplus_data;
     }
 
+    $count_total = $facebook_total + $twitter_shares;
+    $count_total += $linkedin_shares + $google_plusone;
     // Adding the total data from all above to get total virality.
     db_merge('social_stats_total')
     ->key(array('nid' => $result->nid))
     ->fields(array(
       'node_type' => $result->type,
-      'total_virality' => $facebook_total + $twitter_shares + $linkedin_shares + $google_plusone,
+      'total_virality' => $count_total,
     ))
     ->execute();
   }
@@ -171,5 +187,20 @@ function social_stats_cron() {
  * Implements hook_node_delete().
  */
 function social_stats_node_delete($node) {
-
+  // Delete all the social data on node deletion.
+  db_delete('social_stats_facebook')
+    ->condition('nid', $node->nid)
+    ->execute();
+  db_delete('social_stats_twitter')
+    ->condition('nid', $node->nid)
+    ->execute();
+  db_delete('social_stats_linkedin')
+    ->condition('nid', $node->nid)
+    ->execute();
+  db_delete('social_stats_gplus')
+    ->condition('nid', $node->nid)
+    ->execute();
+  db_delete('social_stats_total')
+    ->condition('nid', $node->nid)
+    ->execute();
 }

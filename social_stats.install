@@ -140,3 +140,13 @@ function social_stats_schema() {
   );
   return $schema;
 }
+
+/**
+ * Implements hook_uninstall().
+ */
+function social_stats_uninstall() {
+  $node_types = node_type_get_types();
+  foreach ($node_types as $types) {
+    variable_del($types->type);
+  }
+}
