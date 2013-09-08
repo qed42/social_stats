@@ -7,6 +7,7 @@
  * of facebook shares of the node. Only available on on node view i.e. with
  * required context node being viewed
  */
+
 $plugin = array(
   'title' => t('Total virality (Facebook total + plus one count + tweets count + linkedin shares'),
   'content_types' => 'total',
@@ -32,7 +33,7 @@ function social_stats_total_form_render($subtype, $conf, $args, &$context) {
   }
   else {
     $block->content = $total_count->total_virality . ' shares';
-  }  
+  }
   return $block;
 }
 
