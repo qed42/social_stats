@@ -32,10 +32,13 @@ function social_stats_facebook_total_form_render($subtype, $conf, $args, &$conte
   }
   else {
     $block->content = 'total: ' . $total_count->fb_total;
-  }  
+  }
   return $block;
 }
 
+/**
+ * Function to render the edit form, if not used doesn't get a form at all.
+ */
 function social_stats_facebook_total_form_edit($form, &$form_state) {
   return $form;
 }

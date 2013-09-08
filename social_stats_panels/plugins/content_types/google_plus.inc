@@ -31,7 +31,7 @@ function social_stats_google_plus_form_render($subtype, $conf, $args, &$context)
   }
   else {
     $block->content = $plusone_count->plusone . ' shares';
-  }  
+  }
   return $block;
 }
 

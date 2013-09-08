@@ -70,8 +70,12 @@ content types to panels panels.
 1. Facebook likes : Number of Facebook likes of the node.
 2. Facebook shares : Number of times the node has been shared on Facebook.
 3. Facebook comments : Number of Facebook comments on the node.
-4. Facebook likes : likes + shares + comments
+4. Facebook total : likes + shares + comments
 5. Twitter : Number of times the node has been tweeted.
 6. LinkedIn : Number of times the node has been shared.
 7. Google Plus : Number of times the node has been plus oned.
 8. Total virality : Facebook total + Twitter + LinkedIn + Google Plus.
+
+This content types will be visible under "Social Stats" category under
+"Add content" area on the node view by default. If you wish to add this
+content types in mini panels you have to set the required context of node.

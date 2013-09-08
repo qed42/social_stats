@@ -31,7 +31,7 @@ function social_stats_facebook_likes_form_render($subtype, $conf, $args, &$conte
   }
   else {
     $block->content = $like_count->fb_likes . ' likes';
-  }  
+  }
   return $block;
 }
 

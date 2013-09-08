@@ -31,7 +31,7 @@ function social_stats_facebook_comments_form_render($subtype, $conf, $args, &$co
   }
   else {
     $block->content = $comments_count->fb_comments . ' comments';
-  }  
+  }
   return $block;
 }
 

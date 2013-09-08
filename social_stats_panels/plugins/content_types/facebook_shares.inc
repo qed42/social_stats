@@ -31,7 +31,7 @@ function social_stats_facebook_shares_form_render($subtype, $conf, $args, &$cont
   }
   else {
     $block->content = $shares_count->fb_shares . ' shares';
-  }  
+  }
   return $block;
 }
 

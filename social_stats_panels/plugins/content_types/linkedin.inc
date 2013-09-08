@@ -5,6 +5,7 @@
  * Returns a content type with number of LinkedIn shares of the node.
  * Only available on on node view i.e. with required context node being viewed
  */
+
 $plugin = array(
   'title' => t('LinkedIn: shares count'),
   'content_types' => 'linkedin',
@@ -30,7 +31,7 @@ function social_stats_linkedin_form_render($subtype, $conf, $args, &$context) {
   }
   else {
     $block->content = $shares_count->linkedin_shares . ' shares';
-  }  
+  }
   return $block;
 }
 
