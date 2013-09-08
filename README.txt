@@ -15,8 +15,8 @@ MODULE STRUCTURE
 
 1. social_stats : This module is responsible to collect data from the
    social sites and store it in the database.
-2. social_stats_views : Views integration of the data collected by
-   social_stats module.
+2. social_stats_views : Views integration of social_stats module.
+3. social_stats_panels : Panels integration of social_stats module.
 
 ------------------------
 REQUIREMENTS
@@ -26,6 +26,8 @@ REQUIREMENTS
    of Drupal and cron to be running.
 2. Social Stats Views : requires social stats and views 
    (http://drupal.org/project/views)
+3. Social Stats Panels : requires social stats and ctools
+   (http://drupal.org/project/ctools)
 
 ------------------------
 INSTALLATION
@@ -44,7 +46,8 @@ INSTALLATION
 
 5. Run cron. This will fetch the statistics per node and store it in database.
 
-6. Enable the Social Stats Views module (can do it at step 2 itself).
+6. Enable the Social Stats Views module and Social Stats Panels
+   (can do it at step 2 itself).
 
 ------------------------
 USAGE
@@ -61,3 +64,14 @@ features to views.
    filter like "only show nodes which have Facebook likes > 200".
 3. Sort : Sort the content on the basis of the stats, ascending or
    descending.
+
+Social Stats Panels module will enable you to have the following additional
+content types to panels panels.
+1. Facebook likes : Number of Facebook likes of the node.
+2. Facebook shares : Number of times the node has been shared on Facebook.
+3. Facebook comments : Number of Facebook comments on the node.
+4. Facebook likes : likes + shares + comments
+5. Twitter : Number of times the node has been tweeted.
+6. LinkedIn : Number of times the node has been shared.
+7. Google Plus : Number of times the node has been plus oned.
+8. Total virality : Facebook total + Twitter + LinkedIn + Google Plus.
