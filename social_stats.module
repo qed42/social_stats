@@ -66,7 +66,7 @@ function social_stats_cron() {
   foreach ($node_types as $types) {
     $variable = variable_get($types->type);
     if ($variable['Facebook'] || $variable['Twitter'] || $variable['Google Plus'] || $variable['LinkedIn']) {
-      $content_types[] = $typees->type;
+      $content_types[] = $types->type;
     }
   }
 
@@ -126,9 +126,9 @@ function social_stats_cron() {
 
     // Getting data from LinkedIn for nodes of selected node type.
     if ($variable['LinkedIn']) {
-      // Write a query to fetch the data from LinkedIn
+      // Write a query to fetch the data from LinkedIn.
       $linkedin_query = 'http://www.linkedin.com/countserv/count/share?';
-      $linkedin_query .='format=json&url=' . $node_path;
+      $linkedin_query .= 'format=json&url=' . $node_path;
       $linkedin_response = drupal_http_request($linkedin_query);
       $linkedin_data = json_decode($linkedin_response->data);
       db_merge('social_stats_linkedin')
@@ -148,14 +148,13 @@ function social_stats_cron() {
       $google_query .= '","source":"widget","userId":"@viewer"';
       $google_query .= ',"groupId":"@self"},"jsonrpc":"2.0",';
       $google_query .= '"key":"p","apiVersion":"v1"}]';
+      $query_content_type = array('Content-type: application/json');
       $curl = curl_init();
       curl_setopt($curl, CURLOPT_URL, "https://clients6.google.com/rpc");
       curl_setopt($curl, CURLOPT_POST, 1);
       curl_setopt($curl, CURLOPT_POSTFIELDS, $google_query);
       curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
-      curl_setopt($curl, CURLOPT_HTTPHEADER, array(
-        'Content-type: application/json'
-      ));
+      curl_setopt($curl, CURLOPT_HTTPHEADER, $query_content_type);
       $curl_results = curl_exec($curl);
       curl_close($curl);
       $json = json_decode($curl_results, TRUE);
