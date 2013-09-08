@@ -65,7 +65,10 @@ function social_stats_cron() {
   $content_types = array();
   foreach ($node_types as $types) {
     $variable = variable_get($types->type);
-    if ($variable['Facebook'] || $variable['Twitter'] || $variable['Google Plus'] || $variable['LinkedIn']) {
+    if ($variable['Facebook']    ||
+        $variable['Twitter']     ||
+        $variable['Google Plus'] ||
+        $variable['LinkedIn']) {
       $content_types[] = $types->type;
     }
   }
