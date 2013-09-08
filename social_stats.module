@@ -8,12 +8,14 @@
  * Implements hook_help().
  */
 function social_stats_help($path, $arg) {
+  $help_text = '';
   switch ($path) {
     case 'admin/help#social_stats':
-      return '<p>' . t('This module provides an API to get the social statistics of the nodes of the selected content types. The data includes number of shares of a particular node on Facebook, Twitter, LinkedIn, Google Plus. This module does a collection of data on cron run. Using modules like Elysia Cron this can be set to some convinient time (for e.g. once or twice a day).') . '</p><p>' . t('Use Social Stats Views module for integration of this data in the Views module : like sorting according to the number of shares, using the number of shares as a field, having a filter criteria with this data, etc.') . '</p>';
+      $help_text = '<p>' . t('This module provides an API to get the social statistics of the nodes of the selected content types. The data includes number of shares of a particular node on Facebook, Twitter, LinkedIn, Google Plus. This module does a collection of data on cron run. Using modules like Elysia Cron this can be set to some convinient time (for e.g. once or twice a day).') . '</p><p>' . t('Use Social Stats Views module for integration of this data in the Views module : like sorting according to the number of shares, using the number of shares as a field, having a filter criteria with this data, etc.') . '</p>';
 
     break;
   }
+  return $help_text;
 }
 
 /**
