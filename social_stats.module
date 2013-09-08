@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * @file
+ */
 /**
  * Implements hook_help().
  */
@@ -7,7 +9,7 @@ function social_stats_help($path, $arg) {
   switch ($path) {
     case 'admin/help#social_stats':
       return '<p>' . t('This module provides an API to get the social statistics of the nodes of the selected content types. The data includes number of shares of a particular node on Facebook, Twitter, LinkedIn, Google Plus. This module does a collection of data on cron run. Using modules like Elysia Cron this can be set to some convinient time (for e.g. once or twice a day).') . '</p><p>' . t('Use Social Stats Views module for integration of this data in the Views module : like sorting according to the number of shares, using the number of shares as a field, having a filter criteria with this data, etc.') . '</p>';
-      break;
+    break;
   }
 }
 
@@ -17,7 +19,7 @@ function social_stats_help($path, $arg) {
 function social_stats_menu() {
   $items = array();
   $items['admin/config/social-stats'] = array(
-    'title' => t('Social Statistics'),
+    'title' => 'Social Statistics',
     'description' => 'Settings for Social Stats module',
     'weight' => 10,
     'page callback' => 'system_admin_menu_block_page',
@@ -27,7 +29,7 @@ function social_stats_menu() {
   );
 
   $items['admin/config/social-stats/settings'] = array(
-    'title' => t('Social Statistics'),
+    'title' => 'Social Statistics',
     'description' => 'Administrative settings for social stats module',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('social_stats_content_types_form'),
@@ -54,22 +56,25 @@ function social_stats_permission() {
  */
 function social_stats_cron() {
   global $base_url;
-  //Get list of content types in the site
+  // Get list of content types in the site.
   $node_types = node_type_get_types();
   $content_types = array();
-  foreach($node_types as $key => $types) {
+  foreach ($node_types as $types) {
     $variable = variable_get($types->type);
-    if($variable['Facebook'] || $variable['Twitter'] || $variable['Google Plus'] || $variable['LinkedIn']) {
+    if ($variable['Facebook'] || $variable['Twitter'] || $variable['Google Plus'] || $variable['LinkedIn']) {
       $content_types[] = $types->type;
     }
   }
 
-  //Fetch node id and type for the content types which has atleast one social media selected
+  /**
+   * Fetch node id and type for the content types,
+   * which has atleast one social media selected.
+   */
   $query = db_select('node', 'n')
             ->fields('n', array('nid', 'type'))
             ->condition('n.type', $content_types)
             ->execute();
-  while($result = $query->fetchObject()) {
+  while ($result = $query->fetchObject()) {
     $facebook_total = 0;
     $twitter_shares = 0;
     $linkedin_shares = 0;
@@ -77,8 +82,8 @@ function social_stats_cron() {
     $variable = variable_get($result->type);
     $node_path = $base_url . '/' . drupal_get_path_alias('node/' . $result->nid);
 
-    //Getting data from Facebook for nodes of node type which have this option selected
-    if($variable['Facebook']) {
+    // Getting data from Facebook for nodes of the selected node type.
+    if ($variable['Facebook']) {
       $fql_query = 'http://api.facebook.com/method/fql.query?query=select%20share_count,%20like_count,%20total_count,%20comment_count%20from%20link_stat%20where%20url=%22' . $node_path . '%22&format=json';
       $fql_response = drupal_http_request($fql_query);
       $facebook_data = json_decode($fql_response->data);
@@ -96,8 +101,8 @@ function social_stats_cron() {
       $facebook_total = $facebook_data[0]->total_count;
     }
 
-    //Getting data from Twitter for nodes of node type which have this option selected
-    if($variable['Twitter']) {
+    // Getting data from Twitter for nodes of selected node type.
+    if ($variable['Twitter']) {
       $tweets_url = 'http://urls.api.twitter.com/1/urls/count.json?url=' . $node_path;
       $tweets_response = drupal_http_request($tweets_url);
       $tweets_data = json_decode($tweets_response->data);
@@ -111,8 +116,8 @@ function social_stats_cron() {
       $twitter_shares = $tweets_data->count;
     }
 
-    //Getting data from LinkedIn for nodes of node type which have this option selected
-    if($variable['LinkedIn']) {
+    // Getting data from LinkedIn for nodes of selected node type.
+    if ($variable['LinkedIn']) {
       $linkedin_url = 'http://www.linkedin.com/countserv/count/share?format=json&url=' . $node_path;
       $linkedin_response = drupal_http_request($linkedin_url);
       $linkedin_data = json_decode($linkedin_response->data);
@@ -127,17 +132,17 @@ function social_stats_cron() {
       $linkedin_shares = $linkedin_data->count;
     }
 
-    //Getting data from Google Plus for nodes of node type which have this option selected
-    if($variable['Google Plus']) {
+    // Getting data from Google Plus for nodes of selected node type.
+    if ($variable['Google Plus']) {
       $curl = curl_init();
       curl_setopt($curl, CURLOPT_URL, "https://clients6.google.com/rpc");
       curl_setopt($curl, CURLOPT_POST, 1);
       curl_setopt($curl, CURLOPT_POSTFIELDS, '[{"method":"pos.plusones.get","id":"p","params":{"nolog":true,"id":"' . $node_path . '","source":"widget","userId":"@viewer","groupId":"@self"},"jsonrpc":"2.0","key":"p","apiVersion":"v1"}]');
-      curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+      curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
       curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-type: application/json'));
       $curl_results = curl_exec ($curl);
       curl_close ($curl);
-      $json = json_decode($curl_results, true);
+      $json = json_decode($curl_results, TRUE);
       $gplus_data = intval($json[0]['result']['metadata']['globalCounts']['count']);
       db_merge('social_stats_gplus')
       ->key(array('nid' => $result->nid))
@@ -149,7 +154,7 @@ function social_stats_cron() {
       $google_plusone = $gplus_data;
     }
 
-    //Adding the total data from all above to get total virality of the node on social sites
+    // Adding the total data from all above to get total virality.
     db_merge('social_stats_total')
     ->key(array('nid' => $result->nid))
     ->fields(array(

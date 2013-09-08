@@ -11,7 +11,7 @@
 function social_stats_content_types_form() {
   $form = array();
   $node_types = node_type_get_types();
-  foreach($node_types as $types) {
+  foreach ($node_types as $types) {
     $form['social_stats'][$types->type] = array(
       '#type' => 'fieldset',
       '#title' => $types->name,
@@ -20,7 +20,12 @@ function social_stats_content_types_form() {
     );
     $form['social_stats'][$types->type][$types->type] = array(
       '#type' => 'checkboxes',
-      '#options' => drupal_map_assoc(array(t('Facebook'), t('Twitter'), t('Google Plus'), t('LinkedIn'))),
+      '#options' => drupal_map_assoc(array(
+        t('Facebook'),
+        t('Twitter'),
+        t('Google Plus'),
+        t('LinkedIn')
+      )),
       '#default_value' => variable_get($types->type) ? variable_get($types->type) : NULL,
     );
   }

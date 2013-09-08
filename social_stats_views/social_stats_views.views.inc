@@ -1,7 +1,11 @@
 <?php
 
 /**
- * Implements hook_views_data
+ * @file
+ * Views plugin settings in this file.
+ */
+/**
+ * Implements hook_views_data()
  */
 function social_stats_views_views_data() {
   $data = array();

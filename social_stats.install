@@ -1,6 +1,10 @@
 <?php
 
 /**
+ * @file
+ * Table schema for the tables used by Social Stats module.
+ */
+/**
  * Implements hook_schema().
  */
 function social_stats_schema() {
