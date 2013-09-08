@@ -4,6 +4,7 @@
  * @file
  * Views plugin settings in this file.
  */
+
 /**
  * Implements hook_views_data().
  */
