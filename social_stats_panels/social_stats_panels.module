@@ -1,0 +1,8 @@
+<?php
+
+/*
+ * Implements hook_ctools_plugin_directory()
+ */
+function social_stats_panels_ctools_plugin_directory($module, $plugin) {
+   return 'plugins/' . $plugin;
+}
